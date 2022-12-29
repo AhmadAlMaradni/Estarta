@@ -12,9 +12,14 @@ const MainTable = ({ headers,DataAfterFilter, DataLog }: { headers: any,DataAfte
     const [page, setCurrentPage] = useState(1);
     const index = page * 10;
     const pageNumber = index - 10;
-    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    
+    const paginate = (pageNumber: number) =>{ 
+      setCurrentPage(pageNumber)};
 
-    const submitFilter = (filterValue: any) => setFilterValues(filterValue);
+    const submitFilter = (filterValue: any) =>{
+      setCurrentPage(1);
+      setFilterValues(filterValue);
+    }
 
     // filter on data and slice form the main data
     DataAfterFilter = filterData({ Data: DataAfterFilter, filterName })
