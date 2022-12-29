@@ -53,8 +53,9 @@ const MainTable = ({ headers,DataAfterFilter, DataLog }: { headers: any,DataAfte
 
 }
 
-// add the logic here for easy review within the scope Otherwise "Best Practice" spraded model file
+// add the logic here for easy review within the scope Otherwise "Best ractice" spraded model file
 export default MainTable
+
 
  let filterData = ({Data,filterName}: {Data: any[];filterName: any;})=> {
     let filteredData = [];
