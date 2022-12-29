@@ -9,7 +9,7 @@ class Filters extends React.Component<{ onClick: MouseEventHandler<any>, router:
         super(props);
         this.state = {
             filterName: {},
-            onClick: (filterValues: any) => { }
+            onClick: () => { }
         };
     }
 
