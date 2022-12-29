@@ -16,7 +16,8 @@ const MainTable = ({ headers,DataAfterFilter, DataLog }: { headers: any,DataAfte
 
     const submitFilter = (filterValue: any) => setFilterValues(filterValue);
 
-    DataAfterFilter = filterData({ tableData: DataAfterFilter, filterName })
+    // filter on data and slice form the main data
+    DataAfterFilter = filterData({ Data: DataAfterFilter, filterName })
     DataLog = DataAfterFilter.slice(pageNumber, index);
         
     return (
@@ -24,83 +25,76 @@ const MainTable = ({ headers,DataAfterFilter, DataLog }: { headers: any,DataAfte
         <Filters onClick={submitFilter} />
         <div  className={styles.MaintableContaner}>
             <table className={styles.Maintable}>
-                <thead>
-                    <tr>
+                <thead >
+                    <tr key={headers.id}>
                         {headers.map((header:any) => (<th>{header.name}</th>))}
                     </tr>
                 </thead>
                 <tbody>
-                    {DataLog.map((user:any) => (
-                        <tr>
-                            <td>{user.logId}</td>
-                            <td>{user.applicationType?? <span className={styles.No_Row_data}> -/-</span>}</td>
-                            <td>{user.applicationId?? <span className={styles.No_Row_data}> -/-</span>}</td>
-                            <td>{user.actionType?? <span className={styles.No_Row_data}> -/-</span>}</td>
+                    {DataLog.map((log:any,i:any) => (
+                        <tr key={i}> 
+                            <td>{log.logId}</td>
+                            <td>{log.applicationType?? <span className={styles.No_Row_data}> -/-</span>}</td>
+                            <td>{log.applicationId?? <span className={styles.No_Row_data}> -/-</span>}</td>
+                            <td>{log.actionType?? <span className={styles.No_Row_data}> -/-</span>}</td>
                             <td> <span className={styles.No_Row_data}> -/-</span></td>
-                            <td className={styles.dataWidth} >{user.creationTimestamp?? <span className={styles.No_Row_data}> -/-</span>}</td>
+                            <td className={styles.dataWidth} >{log.creationTimestamp?? <span className={styles.No_Row_data}> -/-</span>}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             {DataLog.length === 0 &&<div className="No-Data">No Data Matching This Filter</div>}
 
-                 {/* Pagenaion */}
-                 <Pagination totalUsers={DataAfterFilter.length} currentPage={page} paginate={paginate} />
+            {/* Pagenaion */}
+            <Pagination totalUsers={DataAfterFilter.length} currentPage={page} paginate={paginate} />
         </div>
     </div>
     )
 
 }
+
+// add the logic here for easy review within the scope Otherwise "Best Practice" spraded model file
 export default MainTable
 
+ let filterData = ({Data,filterName}: {Data: any[];filterName: any;})=> {
+    let filteredData = [];
 
- let filterData = ({tableData,filterName,}: {tableData: any[];filterName: any;})=> {
-    let filteredData: any[] = [];
-
-  if (
-    filterName &&
-    Object.keys(filterName).length === 0 &&
-    Object.getPrototypeOf(filterName) === Object.prototype
-  ) {
-    return (filteredData = [...tableData]);
+  if (filterName.length === 0  ){
+    return (filteredData = [...Data]);
     }
 
-  filteredData = tableData.filter((dataLog) => {
-      let actionTypeFilter = null;
-      let applicationTypeFilter = null;
-      let applicationIdFilter = null;
-      let logIdFilter = null;
-      let creationTimestampFilter = null;
-      let isResult = true;
+  filteredData = Data.filter((dataLog) => {
+      let logIdFlag,actionFlag ,applicationFlag 
+      ,applicationIdFlag , DateFlag,isResult = true;
 
     if (filterName.logId && filterName.logId !== "") {
-        logIdFilter = dataLog.logId?.toString().includes(filterName.logId.toLowerCase());
-          isResult = isResult && logIdFilter;
+      logIdFlag = dataLog.logId?.toString().includes(filterName.logId.toLowerCase());
+          isResult = isResult && logIdFlag;
       }
 
     if (filterName.actionType && filterName.actionType !== "") {
-      actionTypeFilter = dataLog.actionType?.toString().trim().toLowerCase()
+      actionFlag = dataLog.actionType?.toString().trim().toLowerCase()
         .localeCompare(filterName.actionType.toLowerCase()) === 0;
-        isResult = isResult && actionTypeFilter;
+        isResult = isResult && actionFlag;
     }
 
     if (filterName.applicationType && filterName.applicationType !== "") {
-      applicationTypeFilter = dataLog.applicationType?.toString().toLowerCase()
+      applicationFlag = dataLog.applicationType?.toString().toLowerCase()
         .localeCompare(filterName.applicationType.toLowerCase()) === 0;
-        isResult = isResult && applicationTypeFilter;
+        isResult = isResult && applicationFlag;
     }
 
     if (filterName.applicationId && filterName.applicationId !== "") {
-      applicationIdFilter = dataLog.applicationId?.toString().includes(filterName.applicationId.toLowerCase());
-      isResult = isResult && applicationIdFilter;
+      applicationIdFlag = dataLog.applicationId?.toString().includes(filterName.applicationId.toLowerCase());
+      isResult = isResult && applicationIdFlag;
     }
 
     if ( filterName.from && filterName.to ) {
       const logDate = new Date(dataLog.creationTimestamp);
       const filterFromDate = new Date(filterName.from);
       const filtertoDate = new Date(filterName.to);
-      creationTimestampFilter = logDate >= filterFromDate && logDate <= filtertoDate;
-      isResult = isResult && creationTimestampFilter;
+      DateFlag = logDate >= filterFromDate && logDate <= filtertoDate;
+      isResult = isResult && DateFlag;
     }
 
     if (isResult) {return dataLog}

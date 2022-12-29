@@ -5,34 +5,26 @@ import styles from '../styles/Home.module.css'
 
 class Filters extends React.Component<{ onClick: MouseEventHandler<any>, router: NextRouter }, { filterName: any, onClick: MouseEventHandler<any> }> {
 
-      constructor(props: any) {
+    constructor(props: any) {
         super(props);
         this.state = {
-            filterName: {
-                logId:'',
-                applicationId: '',
-                actionType: '',
-                applicationType: '',
-                from: '',
-                to: ''
-            },
-            onClick: (filterValues: any) => { }
+            filterName: {},
+            onClick: () => { }
         };
     }
 
     useEffect() {
-            let Params = this.props.router.query
-            this.setState((state: any) => ({
-                filterName: {
-                    logId:Params?.logId??'',
-                    applicationId: Params?.applicationId??'',
-                    actionType: Params?.actionType??'',
-                    applicationType: Params?.applicationType??'',
-                    from: Params?.from??'',
-                    to: Params?.to??''
-                },
-            }))
-            this.props.onClick(this.state.filterName)
+        let Params = this.props.router.query
+        this.setState((state: any) => ({
+            filterName: {
+                applicationId: Params?.applicationId??'',
+                actionType: Params?.actionType??'',
+                applicationType: Params?.applicationType??'',
+                from: Params?.from??'',
+                to: Params?.to??''
+            },
+        }))
+        this.props.onClick(this.state.filterName)
     }
 
     applyFilter = ($event: any, key: string) => {
@@ -70,7 +62,7 @@ class Filters extends React.Component<{ onClick: MouseEventHandler<any>, router:
                 </div>
            
                 <div>
-                    <label  className={styles.Filterـlabel} htmlFor="applicationId">Application ID</label>
+                    <label className={styles.Filterـlabel} htmlFor="applicationId">Application ID</label>
                     <input className={styles.Filterـbox} value={this.state.filterName.applicationId} placeholder="eg. 219841/2021" name="applicationId" type="text" onChange={(e) => this.applyFilter(e, 'applicationId')} />
                 </div>
 
