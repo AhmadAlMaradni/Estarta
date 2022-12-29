@@ -12,7 +12,7 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [Demo](https://estarta.vercel.app/) with your browser to see the result.
 
 
 [API Data Table](https://estarta.vercel.app/mainPage/userList) can be accessed on [https://estarta.vercel.app/mainPage/userList](https://estarta.vercel.app/mainPage/userList).
@@ -21,6 +21,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+I didn't use any third party/Library for table,filter, pagination.
+
+Use readable variables/functions/classs that can be ease to know what is used for with add commit for code block.
 
 ## Learn More
 
